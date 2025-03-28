@@ -1,0 +1,5 @@
+/venv
+/src/cache
+/src/tmpr
+/src/f1_parser.py
+/src/core/__pycache__
