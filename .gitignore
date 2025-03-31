@@ -1,5 +1,7 @@
-/venv
-/src/cache
-/src/tmpr
-/src/f1_parser.py
-/src/core/__pycache__
+venv/
+.pytest_cache/
+cache/
+.flake8
+tests.ipynb
+sportdatahub/__pycache__
+tests/__pycache__
