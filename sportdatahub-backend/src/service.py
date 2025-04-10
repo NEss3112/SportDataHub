@@ -9,15 +9,18 @@ from schemas import RaceSchedule
 fastf1.Cache.enable_cache("./cache")
 
 
-async def get_closest_race():
+async def get_next_race():
     """..."""
     current_day = datetime.now(pytz.UTC).toordinal()
 
-    schedule = await get_race_schedule()
-    closest_events = [event for event in schedule if ((event.date.toordinal() \
-            - datetime.now(pytz.UTC).toordinal())) in range (0,40)] 
+    races = await get_race_schedule()
+   
+    future_races = [race for race in races if race.date.toordinal() > current_day]
 
-    return closest_events[0]
+    if not future_races:
+        return races[-1]
+
+    return future_races[0] 
 
 async def get_race_schedule():
     current_year = datetime.now().year
@@ -40,7 +43,7 @@ async def get_race_schedule():
     return races
 
 
-async def get_track_coordinates(session:Session) -> list[float]:  # TODO: Not sure about annotations
+async def get_track_coordinates(session) -> list[float]:  # TODO: Not sure about annotations
    
     cirquit_info = session.get_cirquit_info()
     lap = session.laps.pick_fastest()

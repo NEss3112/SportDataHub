@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from schemas import RaceSchedule
-from service import get_race_schedule
+from service import *
 import fastf1
 import pandas as pd
 from datetime import datetime
@@ -25,17 +25,8 @@ async def get_schedule():
 
 
 @app.get("/api/schedule/next", response_model=RaceSchedule)
-async def get_next_race():
-    races = await get_race_schedule()
-    now = datetime.now(pytz.UTC)
-
-    future_races = [race for race in races if race.date > now]
-
-    if not future_races:
-        return races[-1]
-
-    return future_races[0]
-
+async def get_next():
+    return await get_next_race()
 
 @app.get("/")
 async def home():
