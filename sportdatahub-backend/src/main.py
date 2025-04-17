@@ -28,10 +28,17 @@ async def get_schedule():
 async def get_next():
     return await get_next_race()
 
+
 @app.get("/")
 async def home():
     return {"message":"Welcome to SportDataHub v.0.1"}
 
+
+@app.get("/api/session")
+async def get_session(year: int, gp: int, session_type):
+    return await get_session_data(year, gp, session_type)
+
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app)
+    uvicorn.run("main:app", reload=True)

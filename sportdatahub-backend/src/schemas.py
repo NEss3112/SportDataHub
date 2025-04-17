@@ -8,3 +8,5 @@ class RaceSchedule(BaseModel):
     country: str
     date: datetime
     time: str # HH:MM
+
+
