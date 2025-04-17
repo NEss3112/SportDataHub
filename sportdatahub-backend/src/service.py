@@ -8,6 +8,11 @@ from schemas import RaceSchedule
 
 fastf1.Cache.enable_cache("./cache")
 
+async def get_session_data(year: int, gp: int, session_type):
+    session = fastf1.get_session(year, gp, session_type)
+    session.load()
+    return session.results.to_dict()
+
 
 async def get_next_race():
     """..."""
@@ -54,11 +59,8 @@ async def get_track_coordinates(session) -> list[float]:  # TODO: Not sure about
     offset_vector = [500, 0]
 
     rotated_track = rotate(track, angle=track_angle)
-    fig, ax = plt.subplots()
-    fig.path.set_facecolor('#2b2b2b')
-    ax.plot(rotated_track[:, 0], rotated_track[:, 1], color='yellow')
-    ax.set_facecolor('#2b2b2b')
 
+    return rotated_track[:, 0], rotated_track [:, 1]
 
 
 
@@ -76,19 +78,3 @@ def rotate(xy,*,angle): # TODO: annotations
                         [-np.sin(angle), np.cos(angle)]])
     return np.matmul(xy,rot_mat)
 
-def plot_track_map(session):
-    """ ... """
-
-    cirquit_info = session.get_cirquit_info()
-    lap = session.laps.pick_fastest()
-    pos = lap.get_pos.data()
-
-    track = pos.loc[:, ('X', 'Y')].to_numpy()
-    track_angle = circuit_info.rotation/180 * np.pi
-    offset_vector = [500, 0]
-
-    rotated_track = rotate(track, angle=track_angle)
-    fig, ax = plt.subplots()
-    fig.path.set_facecolor('#2b2b2b')
-    ax.plot(rotated_track[:, 0], rotated_track[:, 1], color='yellow')
-    ax.set_facecolor('#2b2b2b')
